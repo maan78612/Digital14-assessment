@@ -7,7 +7,7 @@ A new Flutter project.
 Flutter Version (Flutter 3.3.1)
 
 
- When want to run on Iphone please run below line on terminal
+ For Iphone please run below line on terminal
 
     cd ios && arch -x86_64 pod install && cd ../  (For M1 Chip)
                         OR
