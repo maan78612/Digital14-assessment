@@ -2,7 +2,7 @@ import 'package:assessment/constants/app_constants.dart';
 import 'package:assessment/constants/styles.dart';
 import 'package:assessment/model_classes/event_model.dart';
 import 'package:assessment/provider/app_provider.dart';
-import 'package:assessment/ui/event/eventDetail.dart';
+import 'package:assessment/ui/event/event_detail.dart';
 import 'package:assessment/ui/event/widgets/search_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
