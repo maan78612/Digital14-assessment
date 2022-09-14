@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:assessment/constants/app_constants.dart';
+import 'package:assessment/hive/hive_services.dart';
 import 'package:assessment/model_classes/error_response.dart';
 import 'package:assessment/model_classes/event_model.dart';
 import 'package:assessment/utilities/api_functions.dart';
+import 'package:assessment/utilities/show_message.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -55,44 +59,37 @@ class AppProvider extends ChangeNotifier {
 
   List<Events> favoriteEvents = [];
 
-  void tabFavIcon(Events event) {
-
-    bool checkFav=checkFavEvent(event);
-    if(checkFav){
-      removeFav(event);
-
-    }else{
-      addFav(event);
+  Future<void> tabFavIcon(Events event) async {
+    bool checkFav = checkFavEvent(event);
+    if (checkFav) {
+      await removeFav(event);
+    } else {
+      await addFav(event);
     }
-    // if (favoriteEvents.isEmpty) {
-    //   addFav(event);
-    // } else {
-    //   for (Events eventToBeChecked in favoriteEvents) {
-    //     print(event.id);
-    //     print(eventToBeChecked.id);
-    //
-    //     if (eventToBeChecked.id == event.id) {
-    //       removeFav(event);
-    //     }
-    //   }
-    // }
 
     notifyListeners();
   }
 
-  void removeFav(Events event) {
-    Get.snackbar(
-        "Removed from Favorite", "This Event has been removed from favorite",
-        colorText: AppConfig.colors.whiteColor,
-        backgroundColor: AppConfig.colors.themeColor);
-    favoriteEvents.removeWhere((element) => element.id == event.id);
+  Future<void> addFav(Events event) async {
+    ShowMessage.snackBar(
+        "Added to Favorite", "This Event has been added to favorite", false);
+
+    favoriteEvents.add(event);
+    await insertFavoriteToHive();
   }
 
-  void addFav(Events event) {
-    Get.snackbar("Added to Favorite", "This Event has been added to favorite",
-        colorText: AppConfig.colors.whiteColor,
-        backgroundColor: AppConfig.colors.themeColor);
-    favoriteEvents.add(event);
+  Future<void> removeFav(Events event) async {
+    ShowMessage.snackBar("Removed from Favorite",
+        "This Event has been removed from favorite", false);
+
+    favoriteEvents.removeWhere((element) => element.id == event.id);
+    await insertFavoriteToHive();
+  }
+
+  Future<void> insertFavoriteToHive() async {
+    await HiveServices.insertString(
+        HiveServices.favoriteList, (json.encode(favoriteEvents)));
+    await getFavoriteList();
   }
 
   bool checkFavEvent(Events eventToBeChecked) {
@@ -105,5 +102,19 @@ class AppProvider extends ChangeNotifier {
       }
     }
     return isFav;
+  }
+
+  Future<void> getFavoriteList() async {
+    String? favHiveData =
+        await HiveServices.getString(HiveServices.favoriteList);
+    if (favHiveData != null) {
+      print("Get hive data");
+      print(json.decode(favHiveData).toString());
+      favoriteEvents = List<Events>.from(
+          json.decode(favHiveData).map((model) => Events.fromJson(model)));
+
+      print(
+          "length of Favorite Events items from hive is ${favoriteEvents.length}");
+    }
   }
 }

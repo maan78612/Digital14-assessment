@@ -7,6 +7,10 @@ A new Flutter project.
 Flutter Version (Flutter 3.3.1)
 
 
+For state-management use Provider
+For mobile storage use HIVE package
+
+
  For Iphone please run below line on terminal
 
     cd ios && arch -x86_64 pod install && cd ../  (For M1 Chip)

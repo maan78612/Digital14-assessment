@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:assessment/env/prod.dart';
 import 'package:assessment/model_classes/app_config_env.dart';
 import 'package:assessment/provider/app_provider.dart';
@@ -7,9 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-main({String env = "dev"}) {
+main({String env = "dev"}) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Directory directory = await getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
   runApp(const MyApp());
 }
 

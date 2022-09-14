@@ -28,7 +28,9 @@ class ShowMessage {
         progressIndicatorBackgroundColor: Colors.lightBlueAccent,
         progressIndicatorValueColor:
         const AlwaysStoppedAnimation<Color>(Colors.tealAccent),
-        borderRadius: 6);
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 2),
+        borderRadius: 10.sp);
   }
 
 
