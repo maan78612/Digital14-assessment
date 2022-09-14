@@ -56,20 +56,36 @@ class AppProvider extends ChangeNotifier {
   List<Events> favoriteEvents = [];
 
   void tabFavIcon(Events event) {
-    if (favoriteEvents.contains(event)) {
+
+    bool checkFav=checkFavEvent(event);
+    if(checkFav){
       removeFav(event);
-    } else {
+
+    }else{
       addFav(event);
     }
+    // if (favoriteEvents.isEmpty) {
+    //   addFav(event);
+    // } else {
+    //   for (Events eventToBeChecked in favoriteEvents) {
+    //     print(event.id);
+    //     print(eventToBeChecked.id);
+    //
+    //     if (eventToBeChecked.id == event.id) {
+    //       removeFav(event);
+    //     }
+    //   }
+    // }
 
     notifyListeners();
   }
 
   void removeFav(Events event) {
-    Get.snackbar("Removed from Favorite", "This Event has been removed from favorite",
+    Get.snackbar(
+        "Removed from Favorite", "This Event has been removed from favorite",
         colorText: AppConfig.colors.whiteColor,
         backgroundColor: AppConfig.colors.themeColor);
-    favoriteEvents.remove(event);
+    favoriteEvents.removeWhere((element) => element.id == event.id);
   }
 
   void addFav(Events event) {

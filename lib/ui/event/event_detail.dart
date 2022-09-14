@@ -52,56 +52,56 @@ class EventDetail extends StatelessWidget {
 
   PreferredSize appBar(AppProvider appProvider) {
     return PreferredSize(
-        preferredSize: Size.fromHeight(90.h),
-        child: AppBar(
-          elevation: 0,
-          backgroundColor: AppConfig.colors.whiteColor,
-          centerTitle: false,
-          leading: GestureDetector(
-            onTap: () {
-              Get.back();
-            },
-            child: Icon(Icons.arrow_back_ios,
-                color: AppConfig.colors.themeColor, size: 20.sp),
-          ),
-          title: Text(
-            event.title!,
-            style: latoBold.copyWith(
-                fontSize: 22.sp, color: AppConfig.colors.titleColor),
-            textAlign: TextAlign.start,
-            maxLines: 2,
-          ),
-          actions: [
-            GestureDetector(
-              onTap: () {
-                appProvider.tabFavIcon(event);
-              },
-              child: Padding(
-                padding: EdgeInsets.all(8.0.sp),
-                child: Icon(Icons.favorite,
-                    size: 24.sp,
-                    color: appProvider.checkFavEvent(event)
-                        ? AppConfig.colors.redColor
-                        : AppConfig.colors.grey),
-              ),
-            ),
-          ],
-          bottom: PreferredSize(
-              preferredSize: Size.fromHeight(10.h),
-              child: Divider(
-                  color: AppConfig.colors.grey,
-                  endIndent: 30.sp,
-                  thickness: 1.2.sp,
-                  indent: 30.sp)),
+      preferredSize: Size.fromHeight(90.h),
+      child: AppBar(
+        elevation: 0,
+        backgroundColor: AppConfig.colors.whiteColor,
+        centerTitle: false,
+        leading: GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(Icons.arrow_back_ios,
+              color: AppConfig.colors.themeColor, size: 20.sp),
         ),
-      );
+        title: Text(
+          event.title!,
+          style: latoBold.copyWith(
+              fontSize: 22.sp, color: AppConfig.colors.titleColor),
+          textAlign: TextAlign.start,
+          maxLines: 2,
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              appProvider.tabFavIcon(event);
+            },
+            child: Padding(
+              padding: EdgeInsets.all(8.0.sp),
+              child: Icon(Icons.favorite,
+                  size: 24.sp,
+                  color: appProvider.checkFavEvent(event)
+                      ? AppConfig.colors.redColor
+                      : AppConfig.colors.grey),
+            ),
+          ),
+        ],
+        bottom: PreferredSize(
+            preferredSize: Size.fromHeight(10.h),
+            child: Divider(
+                color: AppConfig.colors.grey,
+                endIndent: 30.sp,
+                thickness: 1.2.sp,
+                indent: 30.sp)),
+      ),
+    );
   }
 
   Widget eventImage(Events? event) {
     return ClipRRect(
         borderRadius: BorderRadius.circular(8.sp),
         child: CachedNetworkImage(
-          imageUrl: event!.performers!.first.image!,
+          imageUrl: event!.performers?.first.image ?? "",
           imageBuilder: (context, imageProvider) => Container(
             height: 220.sp,
             decoration: BoxDecoration(
@@ -109,6 +109,28 @@ class EventDetail extends StatelessWidget {
             ),
           ),
           placeholder: (context, url) => CircularProgressIndicator(),
+          errorWidget: (context, url, error) => Center(child: errorImage()),
         ));
   }
+}
+
+Widget errorImage() {
+  return Padding(
+    padding: EdgeInsets.all(5.sp),
+    child: Column(
+      children: [
+        Image.asset(
+          AppConfig.images.noImage,
+          fit: BoxFit.contain,
+          height: 220.sp,
+        ),
+        Text(
+          "Image not found",
+          style: latoRegular.copyWith(
+              fontSize: 16.sp, color: AppConfig.colors.grey),
+          textAlign: TextAlign.start,
+        ),
+      ],
+    ),
+  );
 }

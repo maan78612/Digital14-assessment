@@ -130,7 +130,7 @@ Widget eventImage(Events? event, AppProvider appProvider) {
       ClipRRect(
           borderRadius: BorderRadius.circular(8.sp),
           child: CachedNetworkImage(
-            imageUrl: event!.performers!.first.image!,
+            imageUrl: event!.performers?.first.image??"",
             imageBuilder: (context, imageProvider) => Container(
               width: 50.sp,
               height: 50.sp,
