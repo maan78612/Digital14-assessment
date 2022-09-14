@@ -61,6 +61,7 @@ Widget eventCard(Events? event, AppProvider appProvider) {
   return InkWell(
     onTap: () {
       Get.to(() => EventDetail(event: event!));
+      FocusManager.instance.primaryFocus?.unfocus();
     },
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
